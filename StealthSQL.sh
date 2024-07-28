@@ -6,7 +6,7 @@ print_banner() {
         "******************************************"
         "*                StealthSQL              *"
         "*             SQL Injection Tool         *"
-        "*                  v2.0.0                *"
+        "*                  v2.0.1                *"
         "*      ----------------------------      *"
         "*                        by @ImKKingshuk *"
         "* Github- https://github.com/ImKKingshuk *"
