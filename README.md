@@ -1,29 +1,42 @@
-# StealthSQL
+<h1 align="center">StealthSQL</h1>
+<h3 align="center">v2.0.1</h3>
 
-StealthSQL - Unlock the Stealthy World of SQL Injection! 🌐✨ Dive into the shadows of web security with StealthSQL. Harness the power of StealthSQL to silently unveil vulnerabilities in SQL databases. Conduct stealthy SQL injections, expose misconfigurations, and empower your security journey. 🕵️‍♂️🔐
+**StealthSQL: The Ultimate SQL Injection Tool** - Dive into the shadows of web security with StealthSQL. Harness the power of StealthSQL to silently unveil vulnerabilities in SQL databases. Conduct stealthy SQL injections, expose misconfigurations, and empower your security journey. 🕵️‍♂️🔐
 
-## What's New (v1.0.1)
+## What's New (v2.0.1)
 
-- Multiple SQL Injection Techniques (Boolean Blind, Time-Based Blind)
-- Interactive and Optimized SQL Injection
-- Color-coded Output for Enhanced Visibility
+- **Payload Encoding**: Automatically encode payloads to bypass WAF/IDS.
+- **Payload Customization**: Advanced payload customization for different injection techniques.
+- **Report Generation**: Generate detailed reports in HTML, JSON, and CSV formats.
+- **Authentication Handling**: Support for various authentication methods.
+- **Proxy Rotation**: Rotate proxies to avoid detection and rate limits.
+- **Custom Headers**: Allow adding custom headers for more flexibility.
 
 ## Features
 
-- 🌐 **SQL Injection Techniques**: Support for multiple SQL injection techniques, including Boolean Blind and Time-Based Blind.
-- 🕵️‍♂️ **Stealthy Analysis**: Conduct SQL injections with a stealthy approach to uncover vulnerabilities.
-- 🚀 **Web Security**: Enhance your web application security with targeted SQL injection detection.
-- 🔐 **Ethical Hacking**: Utilize StealthSQL as a valuable asset in your ethical hacking toolkit.
-- **Outputs** : Color-coded output for easy visibility and understanding.
-- **Interactive and Optimized**: Easy-to-use with interactive prompts for effective SQL injection assessments.
+- 🛡️ **Vulnerability Detection**: Automatically detect SQL injection vulnerabilities.
+- 🔍 **Advanced Enumeration**: Enumerate databases, tables, and columns effortlessly.
+- ⚡ **Fast and Efficient**: Multi-threading support for faster execution.
+- 📊 **Detailed Reporting**: Generate comprehensive reports in multiple formats.
+- 🔒 **Authentication Support**: Handle different authentication methods seamlessly.
+- 🛡️ **Payload Encoding**: Encode payloads to bypass security mechanisms.
+- 🌐 **Proxy Rotation**: Rotate proxies to avoid detection and rate limits.
+- 📲 **Session Management**: Manage and reuse sessions to maintain login state.
+- 🗄️ **Custom Headers**: Add custom headers for more flexibility.
+- 🛠️ **Customizable Payloads**: Customize payloads for different SQL injection techniques.
+- 📢 **Verbose Mode**: Enable verbose mode for detailed output.
 
 ## Requirements
 
 - macOS, Linux, Windows
-- Bash-compatible environment.
-- Internet connectivity for real-time analysis.
+- Bash-compatible environment
+- [curl](https://curl.se/) installed and added to your system's PATH
+- [jq](https://stedolan.github.io/jq/) for JSON processing
+- Optional: Proxy service for proxy rotation
 
-## Usage
+## How to Use
+
+To use **StealthSQL: The Ultimate SQL Injection Tool**, follow these steps:
 
 1. Clone the repository:
 
@@ -39,22 +52,20 @@ StealthSQL - Unlock the Stealthy World of SQL Injection! 🌐✨ Dive into the s
 bash StealthSQL.sh
 ```
 
-## Contributing
-
-We welcome contributions! Feel free to report issues or submit pull requests.
+3. Follow the interactive prompts to specify the target URL, SQL injection type, and other options.
 
 ## Disclaimer
 
-🌟🌟🌟 "The Developer of this tool is not responsible for any type of activity done by you using this tool. Use at your own risk." 🌟🌟🌟
+🌟🌟🌟 "The developer of **StealthSQL: The Ultimate SQL Injection Tool** is not responsible for any misuse or illegal activities conducted with this tool. Use at your own risk." 🌟🌟🌟
 
 ### Note
 
-StealthSQL is designed for ethical hacking and security research purposes. Ensure proper authorization before using it. Uncovering security vulnerabilities without consent is illegal and unethical.
+SQL injection tools should only be used for legitimate purposes and with proper authorization. Using such tools without proper authorization is illegal and a violation of privacy. Ensure proper authorization before using StealthSQL for vulnerability testing or data extraction. Always adhere to ethical hacking practices and comply with all applicable laws and regulations.
 
-### Acknowledgments
+## Acknowledgments
 
-StealthSQL is created for research and educational purposes. It should be used responsibly and in compliance with all applicable laws and regulations. The developer of this tool is not responsible for any misuse.
+**StealthSQL: The Ultimate SQL Injection Tool** is developed for research and educational purposes. It should be used responsibly and in compliance with all applicable laws and regulations. The developer of this tool is not responsible for any misuse of this tool.
 
 Feel free to contribute to the project by reporting issues or submitting pull requests!
 
-### 😎 Unleash the Stealth of SQL Injection with StealthSQL! 😎
+### 😊 Happy SQL Injection with StealthSQL! 😊
