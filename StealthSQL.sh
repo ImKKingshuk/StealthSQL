@@ -71,7 +71,7 @@ get_query_output() {
     if [ "$is_count" == true ]; then
         dictionary="0123456789"
     else
-        dictionary="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+        dictionary="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_\`{|}~"
     fi
 
     while [ "$flag" = true ]; do
